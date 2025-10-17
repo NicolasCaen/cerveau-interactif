@@ -82,75 +82,106 @@
 
         /* Info box styles - positionnées autour du SVG */
         .info-box {
-            display: none;
-     
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-            max-width: 300px;
-            z-index: 500;
-            animation: fadeIn 0.3s ease;
-            border-left: 4px solid #667eea;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        
+        
+            width: 273px;
+            z-index: 9999;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        border-radius: 12px;
+            transform: translateY(-10px);
+            pointer-events: none;
+            padding: 1rem 1.5rem;   
+            border: 2px solid var(--Heading-txt, #D17490);
+            display:flex;
+            flex-direction: column;
+           gap:15px;
         }
 
         .info-box.active {
-            display: block;
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
+
+
         .info-box h2 {
-            color: #667eea;
+           font-family: Interstate;
+font-size: 20px;
+font-weight: 900;
+color: var(--Heading-strong, #3B2783);
             margin-bottom: 10px;
             font-size: 1.3em;
         }
 
         .info-box p {
-            color: #555;
-            line-height: 1.5;
-            font-size: 0.95em;
+         color: var(--Heading-strong, #3B2783);
+/* Paragraphes/M */
+font-family: Interstate;
+font-size: 15px;
+font-style: normal;
+font-weight: 300;
+line-height: 18px; /* 120% */
         }
 
-        /* Positionnement spécifique pour chaque zone */
-        #info-meninges {
-            top: 20%;
-            left: -320px;
+        /* Conteneur principal avec position relative */
+        .animated-svg__grid {
+            position: relative;
+            width: 1140px;
+            height: 570px;
+            margin: 0 auto;
         }
 
-        #info-cervelet {
-            bottom: 5%;
-            right: -320px;
+        /* SVG Cerveau - centré */
+        .svg-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 430px;
         }
 
-        #info-lobes-temporaux {
-            top: 40%;
-            left: -320px;
-        }
-
-        #info-lobes-occipitaux {
-            top: 30%;
-            right: -320px;
-        }
-
+        /* Positionnement des info-boxes autour du cerveau */
+        
+        /* Lobes Pariétaux - en haut au centre */
         #info-lobes-parietaux {
-            top: 5%;
+            top: 20px;
             left: 50%;
             transform: translateX(-50%);
         }
 
+        /* Lobes Frontaux - à gauche, haut */
         #info-lobes-frontaux {
-            top: 10%;
-            left: -320px;
+            top: 80px;
+            left: 50px;
+        }
+
+        /* Méninges - à gauche, milieu */
+        #info-meninges {
+            top: 220px;
+            left: 50px;
+        }
+
+        /* Lobes Temporaux - à gauche, bas */
+        #info-lobes-temporaux {
+            top: 360px;
+            left: 50px;
+        }
+
+        /* Lobes Occipitaux - à droite, haut */
+        #info-lobes-occipitaux {
+            top: 80px;
+            right: 50px;
+        }
+
+        /* Cervelet - à droite, bas */
+        #info-cervelet {
+            top: 360px;
+            right: 50px;
         }
 
         .instructions {
@@ -159,8 +190,44 @@
             margin-top: 20px;
             font-style: italic;
         }
-        .animated-svg__grid{
-            display:grid;
+
+        /* Responsive pour mobile */
+        @media (max-width: 1200px) {
+            .animated-svg__grid {
+                width: 100%;
+                height: auto;
+                min-height: 600px;
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .svg-container {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 90%;
+                max-width: 350px;
+                order: 1;
+            }
+
+            .info-box {
+                position: absolute;
+                width: 90%;
+                max-width: 300px;
+                bottom: 0;
+                left: 50% !important;
+                right:auto !important;
+                top:auto !important;
+                transform: translateY(-100%) translateX(-50%) !important;
+                pointer-events: all;
+                order: 2;
+            }
+
+      
         }
     </style>
 </head>
