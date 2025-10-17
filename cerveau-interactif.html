@@ -299,16 +299,16 @@ line-height: 18px; /* 120% */
         let currentActiveZone = null;
         let activeZones = {};
         let zoneTimeouts = {};
+        const zones = [
+            'meninges',
+            'cervelet',
+            'lobes-temporaux',
+            'lobes-occipitaux',
+            'lobes-parietaux',
+            'lobes-frontaux'
+        ];
 
         function initializeInteractions() {
-            const zones = [
-                'meninges',
-                'cervelet',
-                'lobes-temporaux',
-                'lobes-occipitaux',
-                'lobes-parietaux',
-                'lobes-frontaux'
-            ];
 
             // Réorganiser le SVG pour mettre les zones et boutons à la fin (au-dessus)
             const svg = document.querySelector('svg');
@@ -337,27 +337,7 @@ line-height: 18px; /* 120% */
                 });
             }
 
-            zones.forEach(zone => {
-                const fondElement = document.getElementById(`fond-${zone}`);
-                if (fondElement) {
-                    fondElement.style.opacity = '1';
-                    fondElement.style.pointerEvents = 'none';
-                    fondElement.classList.add('active');
-                }
-
-                const btnElement = document.getElementById(`btn-${zone}`);
-                if (btnElement) {
-                    if (zone === 'meninges') {
-                        btnElement.style.opacity = '1';
-                        btnElement.style.pointerEvents = 'none';
-                        btnElement.classList.add('active');
-                    } else {
-                        btnElement.style.opacity = '0';
-                        btnElement.style.pointerEvents = 'none';
-                        btnElement.classList.remove('active');
-                    }
-                }
-            });
+            applyDefaultState();
 
             zones.forEach(zone => {
                 const zoneElement = document.getElementById(`zone-${zone}`);
@@ -377,7 +357,34 @@ line-height: 18px; /* 120% */
                         if (activeZones[zone]) {
                             return; // Ne rien faire si déjà active
                         }
-                        
+
+                        zones.forEach(otherZone => {
+                            if (otherZone !== zone) {
+                                const otherFond = document.getElementById(`fond-${otherZone}`);
+                                if (otherFond) {
+                                    otherFond.style.opacity = '0';
+                                    otherFond.style.pointerEvents = 'none';
+                                    otherFond.classList.remove('active');
+                                }
+
+                                const otherBtn = document.getElementById(`btn-${otherZone}`);
+                                if (otherBtn && otherZone !== 'meninges') {
+                                    otherBtn.style.opacity = '0';
+                                    otherBtn.style.pointerEvents = 'none';
+                                    otherBtn.classList.remove('active');
+                                }
+                            }
+                        });
+
+                        if (zone !== 'meninges') {
+                            const btnMeninges = document.getElementById('btn-meninges');
+                            if (btnMeninges) {
+                                btnMeninges.style.opacity = '0';
+                                btnMeninges.style.pointerEvents = 'none';
+                                btnMeninges.classList.remove('active');
+                            }
+                        }
+
                         activeZones[zone] = true;
                         console.log('🎯 ZONE SURVOLÉE:', zone);
                         
@@ -433,29 +440,34 @@ line-height: 18px; /* 120% */
             }
         }
 
+        function applyDefaultState() {
+            zones.forEach(zone => {
+                const fondElement = document.getElementById(`fond-${zone}`);
+                if (fondElement) {
+                    fondElement.style.opacity = '1';
+                    fondElement.style.pointerEvents = 'none';
+                    fondElement.classList.add('active');
+                }
+
+                const btnElement = document.getElementById(`btn-${zone}`);
+                if (btnElement) {
+                    if (zone === 'meninges') {
+                        btnElement.style.opacity = '1';
+                        btnElement.style.pointerEvents = 'none';
+                        btnElement.classList.add('active');
+                    } else {
+                        btnElement.style.opacity = '0';
+                        btnElement.style.pointerEvents = 'none';
+                        btnElement.classList.remove('active');
+                    }
+                }
+            });
+        }
+
         function resetZone(zone) {
             activeZones[zone] = false;
-            
-            const fondElement = document.getElementById(`fond-${zone}`);
-            const btnElement = document.getElementById(`btn-${zone}`);
             const infoElement = document.getElementById(`info-${zone}`);
 
-            if (fondElement) {
-                fondElement.style.opacity = '1';
-                fondElement.style.pointerEvents = 'none';
-                fondElement.classList.add('active');
-            }
-            if (btnElement) {
-                if (zone === 'meninges') {
-                    btnElement.style.opacity = '1';
-                    btnElement.style.pointerEvents = 'none';
-                    btnElement.classList.add('active');
-                } else {
-                    btnElement.style.opacity = '0';
-                    btnElement.style.pointerEvents = 'none';
-                    btnElement.classList.remove('active');
-                }
-            }
             if (infoElement) {
                 infoElement.classList.remove('active');
             }
@@ -478,6 +490,7 @@ line-height: 18px; /* 120% */
 
             if (currentActiveZone === zone) {
                 currentActiveZone = null;
+                applyDefaultState();
             }
         }
 
