@@ -338,6 +338,28 @@ line-height: 18px; /* 120% */
             }
 
             zones.forEach(zone => {
+                const fondElement = document.getElementById(`fond-${zone}`);
+                if (fondElement) {
+                    fondElement.style.opacity = '1';
+                    fondElement.style.pointerEvents = 'none';
+                    fondElement.classList.add('active');
+                }
+
+                const btnElement = document.getElementById(`btn-${zone}`);
+                if (btnElement) {
+                    if (zone === 'meninges') {
+                        btnElement.style.opacity = '1';
+                        btnElement.style.pointerEvents = 'none';
+                        btnElement.classList.add('active');
+                    } else {
+                        btnElement.style.opacity = '0';
+                        btnElement.style.pointerEvents = 'none';
+                        btnElement.classList.remove('active');
+                    }
+                }
+            });
+
+            zones.forEach(zone => {
                 const zoneElement = document.getElementById(`zone-${zone}`);
                 const fondElement = document.getElementById(`fond-${zone}`);
                 const btnElement = document.getElementById(`btn-${zone}`);
@@ -419,14 +441,20 @@ line-height: 18px; /* 120% */
             const infoElement = document.getElementById(`info-${zone}`);
 
             if (fondElement) {
-                fondElement.style.opacity = '0';
+                fondElement.style.opacity = '1';
                 fondElement.style.pointerEvents = 'none';
-                fondElement.classList.remove('active');
+                fondElement.classList.add('active');
             }
             if (btnElement) {
-                btnElement.style.opacity = '0';
-                btnElement.style.pointerEvents = 'none';
-                btnElement.classList.remove('active');
+                if (zone === 'meninges') {
+                    btnElement.style.opacity = '1';
+                    btnElement.style.pointerEvents = 'none';
+                    btnElement.classList.add('active');
+                } else {
+                    btnElement.style.opacity = '0';
+                    btnElement.style.pointerEvents = 'none';
+                    btnElement.classList.remove('active');
+                }
             }
             if (infoElement) {
                 infoElement.classList.remove('active');
